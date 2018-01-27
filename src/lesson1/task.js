@@ -2,7 +2,7 @@
   Напишите функцию, которая принимает 1 аргумент и возварщает его тип
 */
 function getDataType(variable) {
-
+  return typeof variable
 }
 
 /*
@@ -14,7 +14,26 @@ function getDataType(variable) {
   'object-function' - если функция
 */
 function getDataTypePseudoName(variable) {
+  const type = typeof variable
 
+  switch(type) {
+  case 'number':
+  case 'string':
+  case 'symbol':
+    return 'primitive'
+  case 'undefined':
+    return 'primitive-special'
+  case 'object':
+    if (variable === null) {
+      return 'primitive-special'
+    }
+    if (Array.isArray(variable)) {
+      return 'object-array'
+    } 
+    return 'object'
+  case 'function':
+    return 'function'
+  }
 }
 
 
@@ -25,7 +44,13 @@ function getDataTypePseudoName(variable) {
   и -1 в другом случае
 */
 function compareByType(a, b) {
-
+  if (a === b) {
+    return 1
+  }
+  if (a == b && a !== b) {
+    return 0
+  }
+  return -1
 }
 
 // Numbers
@@ -37,7 +62,11 @@ function compareByType(a, b) {
   в любом другом случае возврвщвет -1
 */
 function increase(value) {
-
+  if (typeof value == 'number') {
+    return ++value
+  } else {
+    return -1
+  }
 }
 
 /*
@@ -45,7 +74,10 @@ function increase(value) {
   и в случае если аргумент не Infinity или NaN возвращает строку 'safe' иначе 'danger'
 */
 function testForSafeNumber(value) {
-
+  if (Number.isFinite(value) && !Number.isNaN(value)) {
+    return 'safe'
+  }
+  return 'danger'
 }
 
 
@@ -57,7 +89,7 @@ function testForSafeNumber(value) {
   и возвращает массив из елементов строки разделенных по пробелу ' '
 */
 function stringToArray(str) {
-
+  return str.split(' ')
 }
 
 
@@ -66,7 +98,7 @@ function stringToArray(str) {
   и возвращает часть этой строки до первой запятой
 */
 function getStringPart(str) {
-
+  return str.substring(0, str.indexOf(','))
 }
 
 /*
@@ -75,7 +107,11 @@ function getStringPart(str) {
   false в противоположном случае
 */
 function isSingleSymbolMatch(str, symbol) {
-
+  const indices = str.split('').filter((s, index) => { if (s === symbol) return index })
+  if (indices.length == 1) {
+    return str.indexOf(symbol)
+  }
+  return false
 }
 
 /*
@@ -85,7 +121,8 @@ function isSingleSymbolMatch(str, symbol) {
   или строку разделенную "-" если не задан
 */
 function join(array, separator) {
-
+  separator = separator || '-'
+  return array.join(separator)
 }
 
 
@@ -94,7 +131,7 @@ function join(array, separator) {
   и возвращает один состоящий из элементов перового и второго (последовательно сначала первый потом второй)
 */
 function glue(arrA, arrB) {
-
+  return [...arrA, ...arrB]
 }
 
 
@@ -103,7 +140,15 @@ function glue(arrA, arrB) {
   и возвращает другой массив отсортированный от большего к меньшему
 */
 function order(arr) {
-
+  return arr.sort((prev, curr) => { 
+    if (prev < curr) {
+      return 1
+    } else if (prev > curr) {
+      return -1
+    } else {
+      return 0
+    }
+  })
 }
 
 
@@ -112,7 +157,7 @@ function order(arr) {
   и возвращает другой без чисел которые меньше 0
 */
 function removeNegative(arr) {
-
+  return arr.filter((el) => el >= 0)
 }
 
 /*
@@ -122,7 +167,9 @@ function removeNegative(arr) {
   [1,2,3], [1, 3] => [2]
 */
 function without(arrA, arrB) {
-
+  return arrA.filter((el) => { 
+    if (arrB.indexOf(el) < 0) return el 
+  })
 }
 
 /*
@@ -133,7 +180,13 @@ function without(arrA, arrB) {
   '12/6' => 2
 */
 function calcExpression(expression) {
-
+  let result
+  try {
+    result = eval(expression)
+  } catch (e) {
+    return NaN
+  }
+  return result
 }
 
 /*
@@ -145,7 +198,11 @@ function calcExpression(expression) {
   '100>5' => true
 */
 function calcComparison(expression) {
-
+  try {
+    return eval(expression)
+  } catch (e) {
+    throw e
+  }
 }
 
 /*
@@ -157,7 +214,16 @@ function calcComparison(expression) {
   { a: 1, b: 2 }, '.c' => exception
 */
 function evalKey(obj, expression) {
-
+  let result
+  try {
+    result = eval(`(${JSON.stringify(obj)}${expression})`)
+    if (result === undefined) {
+      throw new Error('undefined')
+    }
+    return result
+  } catch (e) {
+    throw e
+  }
 }
 
 export default {
