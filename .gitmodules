@@ -1,0 +1,3 @@
+[submodule "__tests__"]
+	path = __tests__
+	url = git@github.com:vladkampov/gl-jsprocamp-tests.git
