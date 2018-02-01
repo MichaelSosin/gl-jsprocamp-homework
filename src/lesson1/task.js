@@ -62,7 +62,7 @@ function compareByType(a, b) {
   в любом другом случае возврвщвет -1
 */
 function increase(value) {
-  if (typeof value == 'number') {
+  if (typeof value === 'number') {
     return ++value
   } else {
     return -1
@@ -157,7 +157,7 @@ function order(arr) {
   и возвращает другой без чисел которые меньше 0
 */
 function removeNegative(arr) {
-  return arr.filter((el) => el >= 0)
+  return arr.filter(el => el >= 0)
 }
 
 /*
@@ -167,7 +167,7 @@ function removeNegative(arr) {
   [1,2,3], [1, 3] => [2]
 */
 function without(arrA, arrB) {
-  return arrA.filter((el) => { 
+  return arrA.filter(el => { 
     if (arrB.indexOf(el) < 0) return el 
   })
 }
@@ -180,13 +180,13 @@ function without(arrA, arrB) {
   '12/6' => 2
 */
 function calcExpression(expression) {
-  let result
-  try {
-    result = eval(expression)
-  } catch (e) {
-    return NaN
-  }
-  return result
+  const strWithoutSpaces = expression.replace(/ +/g, '')
+  const operatorIndex = strWithoutSpaces.search(/[+-\/*]/g)
+  const operator = strWithoutSpaces.charAt(operatorIndex)
+  const [leftOperand, rightOperand] = strWithoutSpaces
+    .split(strWithoutSpaces.charAt(operatorIndex))
+    .map(item => Number.parseFloat(item))
+  return eval(`${Number.parseFloat(leftOperand)}${operator}${Number.parseFloat(rightOperand)}`)
 }
 
 /*
