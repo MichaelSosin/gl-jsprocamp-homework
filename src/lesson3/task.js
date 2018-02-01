@@ -3,15 +3,17 @@
   Function should return a number - amount of optional parameters that were passed into function.
   Hint: you are allowed to modify both function definition and function body.
 */
-export function countOptional() {
-
+export function countOptional(a, b, ...rest) {
+  return rest.length
 }
 
 /*
   Write your implementation of native Function.prototype.bind method
 */
 export function bindContext(fn, context) {
-
+  return function (...rest) {
+    return fn.apply(context, rest)
+  }
 }
 
 
@@ -30,7 +32,11 @@ export function bindContext(fn, context) {
   Take to account, that you should track log call index starting from 1
 */
 export function addLogCapability(object) {
-
+  const logCounter = 0
+  const message = object.name ? `my name is ${object.name}` : `I dont have name`
+  object.log = function () {
+    return `$Log message #${++logCounter}: ${message}`
+  }
 }
 
 /*
@@ -39,7 +45,9 @@ export function addLogCapability(object) {
   myLogger('first message'); //=> My Topic: first message
 */
 export function logger(topic) {
-
+  return function (message) {
+    return `${topic}: ${message}`
+  }
 }
 
 /*
@@ -60,7 +68,11 @@ export function compose() {
   sumWith4(5) // 9
 */
 export function partial(fn) {
-
+  return function (a) {
+    return function (b) {
+      return fn(a, b)
+    }
+  }
 }
 
 export default {
