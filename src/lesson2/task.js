@@ -2,7 +2,14 @@
   Напишите функцию, которая параметрами принимает 2 числа и возвращает их сумму
 */
 export function sum(a, b) {
-  return a + b
+  try {
+    if (Number.isNaN(a) || Number.isNaN(b)) {
+      throw 'isNaN'
+    }
+    return a + b
+  } catch (e) {
+      throw e
+  }
 }
 
 /*
