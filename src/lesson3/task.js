@@ -10,10 +10,8 @@ export function countOptional(a, b, ...rest) {
 /*
   Write your implementation of native Function.prototype.bind method
 */
-export function bindContext(fn, context) {
-  return function (...rest) {
-    return fn.apply(context, rest)
-  }
+export function bindContext(fn, context, ...rest) {
+  return () => fn.apply(context, rest)
 }
 
 
@@ -32,11 +30,9 @@ export function bindContext(fn, context) {
   Take to account, that you should track log call index starting from 1
 */
 export function addLogCapability(object) {
-  const logCounter = 0
+  object.logCounter = 0
   const message = object.name ? `my name is ${object.name}` : `I dont have name`
-  object.log = function () {
-    return `$Log message #${++logCounter}: ${message}`
-  }
+  object.log = () => `Log message #${++object.logCounter}: ${message}`
 }
 
 /*
@@ -45,16 +41,14 @@ export function addLogCapability(object) {
   myLogger('first message'); //=> My Topic: first message
 */
 export function logger(topic) {
-  return function (message) {
-    return `${topic}: ${message}`
-  }
+  return message => `${topic}: ${message}`
 }
 
 /*
   Implement left to right compose function
 */
-export function compose() {
-
+export function compose(...rest) {
+  return initial => rest.reduce((acc, curr) => curr(acc), initial)
 }
 
 /*
@@ -68,11 +62,7 @@ export function compose() {
   sumWith4(5) // 9
 */
 export function partial(fn) {
-  return function (a) {
-    return function (b) {
-      return fn(a, b)
-    }
-  }
+  return (...rest) => fn.bind(null, ...rest)
 }
 
 export default {
