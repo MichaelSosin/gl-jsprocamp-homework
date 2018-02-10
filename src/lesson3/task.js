@@ -10,8 +10,8 @@ export function countOptional(a, b, ...rest) {
 /*
   Write your implementation of native Function.prototype.bind method
 */
-export function bindContext(fn, context, ...rest) {
-  return () => fn.apply(context, rest)
+export function bindContext(fn, context, ...outerRest) {
+  return (...innerRest) => fn.apply(context, [...outerRest, ...innerRest])
 }
 
 
@@ -30,9 +30,12 @@ export function bindContext(fn, context, ...rest) {
   Take to account, that you should track log call index starting from 1
 */
 export function addLogCapability(object) {
-  object.logCounter = 0
+  let logCounter = 0
   const message = object.name ? `my name is ${object.name}` : `I dont have name`
-  object.log = () => `Log message #${++object.logCounter}: ${message}`
+  object.log = () => {
+    logCounter += 1
+    return `Log message #${logCounter}: ${message}`
+  }
 }
 
 /*
